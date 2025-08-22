@@ -64,18 +64,28 @@ def holeCardsInput(holeCards, deck):
             flag = False
 
 
-def communityCardsInput(communityCards, deck):
+def communityCardsInput(communityCards, deck, CommunityCardStatus):
 
     flag = True
     while flag:
-        communityCards = input("Enter the community cards: ").strip().split()
-        if len(communityCards) != 5 or any(card not in cards for card in communityCards):
-            print("Invalid input. Please enter five valid community cards.")
+        if CommunityCardStatus == 1:
+            cards_needed = 3
+            prompt = "Enter the 3 community cards (flop): "
+        elif CommunityCardStatus == 2:
+            cards_needed = 1
+            prompt = "Enter the turn card: "
+        elif CommunityCardStatus == 3:
+            cards_needed = 1
+            prompt = "Enter the river card: "
+
+        new_cards = input(prompt).strip().split()
+        if len(new_cards) != cards_needed or any(card not in deck for card in new_cards):
+            print(f"Invalid input. Please enter {cards_needed} valid community card(s).")
         else:
-            for card in communityCards:
+            communityCards.extend(new_cards)
+            for card in new_cards:
                 deck.remove(card)
             flag = False
-
 
 
 # Main Program Loop -----------------------------------------------------------------------------------------
@@ -91,7 +101,7 @@ while True:
         if CommunityCardStatus == 0:
             holeCardsInput(holeCards, deck)     
         else:
-            communityCardsInput(communityCards, deck)
+            communityCardsInput(communityCards, deck, CommunityCardStatus)
 
         ProbabilityDisplay(holeCards, deck, communityCards, CommunityCardStatus, Probability)
         CommunityCardStatus += 1
