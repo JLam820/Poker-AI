@@ -45,8 +45,12 @@ def RoyalFlushProbability():
     pass
 
 
-# Probability Display ---------------------------------------------------------------------------------------
-def ProbabilityDisplay():
+# Calcuate and Display Probability ---------------------------------------------------------------------------------------
+def ProbabilityDisplay(Probability):
+    pass
+
+
+def CalculateProbability(holeCards, communityCards, deck, Probability):
     pass
 
 
@@ -103,5 +107,6 @@ while True:
         else:
             communityCardsInput(communityCards, deck, CommunityCardStatus)
 
-        ProbabilityDisplay(holeCards, deck, communityCards, CommunityCardStatus, Probability)
+        CalculateProbability(holeCards, communityCards, deck, Probability) 
+        ProbabilityDisplay(Probability)
         CommunityCardStatus += 1
