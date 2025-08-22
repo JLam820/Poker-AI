@@ -11,14 +11,18 @@ def HighCardDisplay(holecards, communityCards, deck, Probability, CommunityCardS
     rankedCards = []
     highCardString = ""
 
+    if any(prob == 100 for prob in Probability[1:]):
+        Probability[0] = "N/A"
+        return
+
     for card in CardPool:
         cardValue = [cardValues[card[0]], card]
         rankedCards.append(cardValue)
-    rankedCards.append([15, ""])
+    rankedCards.append([0, ""])
     rankedCards.sort(reverse=True, key=lambda x: x[0])
 
     for i in range(5):
-        if rankedCards[i][0] == 15:
+        if rankedCards[i][0] == 0:
             break
         else:
             highCardString += rankedCards[i][1] + " "
@@ -27,7 +31,61 @@ def HighCardDisplay(holecards, communityCards, deck, Probability, CommunityCardS
 
 
 def PairProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
-    pass
+    CardPool = holecards + communityCards
+    
+    rank_counts = {}
+    for card in CardPool:
+        rank = card[0]
+        rank_counts[rank] = rank_counts.get(rank, 0) + 1
+    
+    has_duplicate_rank = any(count >= 2 for count in rank_counts.values())
+    
+    if has_duplicate_rank:
+        Probability[1] = 100
+        return
+    
+    if CommunityCardStatus == 0:
+        remainingCards = len(deck)
+        
+        prob_no_pair = 1.0
+        cards_to_avoid = 6
+        
+        for i in range(5):
+            prob_no_pair *= (remainingCards - cards_to_avoid) / remainingCards
+            remainingCards -= 1
+            cards_to_avoid += 3
+
+        probPair = (1 - prob_no_pair) * 100
+        Probability[1] = round(probPair, 2)
+    
+    elif CommunityCardStatus == 1:
+        remainingCards = len(deck)
+
+        prob_no_pair = 1.0
+        cards_to_avoid = 15
+
+        for i in range(2):
+            prob_no_pair *= (remainingCards - cards_to_avoid) / remainingCards
+            remainingCards -= 1
+            cards_to_avoid += 3
+
+        probPair = (1 - prob_no_pair) * 100
+        Probability[1] = round(probPair, 2)
+
+    elif CommunityCardStatus == 2:
+        remainingCards = len(deck)
+
+        prob_no_pair = 1.0
+        cards_to_avoid = 18
+
+        prob_no_pair *= (remainingCards - cards_to_avoid) / remainingCards
+
+        probPair = (1 - prob_no_pair) * 100
+        Probability[1] = round(probPair, 2)
+
+    else:
+        Probability[1] = 0.0
+
 
 
 def TwoPairProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
@@ -93,7 +151,7 @@ def ProbabilityDisplay(holeCards, communityCards, Probability, CommunityCardStat
 
 
 def CalculateProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus):
-    HighCardDisplay(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    
     PairProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
     TwoPairProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
     ThreeOfAKindProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
@@ -103,20 +161,22 @@ def CalculateProbability(holeCards, communityCards, deck, Probability, Community
     FourOfAKindProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
     StraightFlushProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
     RoyalFlushProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    HighCardDisplay(holeCards, communityCards, deck, Probability, CommunityCardStatus)
 
 
 # Card Input Functions --------------------------------------------------------------------------------------
 def holeCardsInput(holeCards, deck):
-
     flag = True
     while flag:
-        holeCards = input("Enter your hole cards: ").strip().split()
-        if len(holeCards) != 2 or any(card not in cards for card in holeCards):
+        holeCardsInputed = input("Enter your hole cards: ").strip().split()
+        if len(holeCardsInputed) != 2 or any(card not in deck for card in holeCardsInputed):
             print("Invalid input. Please enter two valid hole cards.")
         else:
-            deck.remove(holeCards[0])
-            deck.remove(holeCards[1])
+            holeCards.extend(holeCardsInputed)
+            deck.remove(holeCardsInputed[0])
+            deck.remove(holeCardsInputed[1])
             flag = False
+    return holeCards
 
 
 def communityCardsInput(communityCards, deck, CommunityCardStatus):
@@ -141,6 +201,7 @@ def communityCardsInput(communityCards, deck, CommunityCardStatus):
             for card in new_cards:
                 deck.remove(card)
             flag = False
+        return communityCards
 
 
 # Main Program Loop -----------------------------------------------------------------------------------------
@@ -154,10 +215,15 @@ while True:
 
     while CommunityCardStatus <= 3:
         if CommunityCardStatus == 0:
-            holeCardsInput(holeCards, deck)     
+            holeCards = holeCardsInput(holeCards, deck)     
         else:
-            communityCardsInput(communityCards, deck, CommunityCardStatus)
+            communityCards = communityCardsInput(communityCards, deck, CommunityCardStatus)
 
         CalculateProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus) 
         ProbabilityDisplay(holeCards, communityCards, Probability, CommunityCardStatus)
         CommunityCardStatus += 1
+
+
+    play_again = input("Play another hand? (y/n): ").lower()
+    if play_again != 'y':
+        break
