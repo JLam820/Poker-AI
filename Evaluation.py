@@ -46,8 +46,25 @@ def RoyalFlushProbability():
 
 
 # Calcuate and Display Probability ---------------------------------------------------------------------------------------
-def ProbabilityDisplay(Probability):
-    pass
+def ProbabilityDisplay(holeCards, communityCards, Probability):
+    print()
+    print("===============================================")
+    print("Hole Cards:", holeCards)
+    print("Community Cards:", communityCards)
+    print("-----------------------------------------------")
+    print("Probabilities:")
+    print("High Card:", Probability[0])
+    print("One Pair:", Probability[1])
+    print("Two Pair:", Probability[2])
+    print("Three of a Kind:", Probability[3])
+    print("Straight:", Probability[4])
+    print("Flush:", Probability[5])
+    print("Full House:", Probability[6])
+    print("Four of a Kind:", Probability[7])
+    print("Straight Flush:", Probability[8])
+    print("Royal Flush:", Probability[9])
+    print("===============================================")
+    print()
 
 
 def CalculateProbability(holeCards, communityCards, deck, Probability):
@@ -108,5 +125,5 @@ while True:
             communityCardsInput(communityCards, deck, CommunityCardStatus)
 
         CalculateProbability(holeCards, communityCards, deck, Probability) 
-        ProbabilityDisplay(Probability)
+        ProbabilityDisplay(holeCards, communityCards, Probability)
         CommunityCardStatus += 1
