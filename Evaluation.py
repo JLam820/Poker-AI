@@ -6,7 +6,24 @@ cards = ["2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd",
 
 # Probability Functions -------------------------------------------------------------------------------------
 def HighCardDisplay(holecards, communityCards, deck, Probability, CommunityCardStatus):
-    pass
+    cardValues = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+    CardPool = holecards + communityCards
+    rankedCards = []
+    highCardString = ""
+
+    for card in CardPool:
+        cardValue = [cardValues[card[0]], card]
+        rankedCards.append(cardValue)
+    rankedCards.append([15, ""])
+    rankedCards.sort(reverse=True, key=lambda x: x[0])
+
+    for i in range(5):
+        if rankedCards[i][0] == 15:
+            break
+        else:
+            highCardString += rankedCards[i][1] + " "
+
+    Probability[0] = highCardString.strip()
 
 
 def PairProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
