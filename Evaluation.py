@@ -5,50 +5,58 @@ cards = ["2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd",
          "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As"]
 
 # Probability Functions -------------------------------------------------------------------------------------
-def HighCardDisplay():
+def HighCardDisplay(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def PairProbability():
+def PairProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def TwoPairProbability():
+def TwoPairProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def ThreeOfAKindProbability():
+def ThreeOfAKindProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def StraightProbability():
+def StraightProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def FlushProbability():
+def FlushProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def FullHouseProbability():
+def FullHouseProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def FourOfAKindProbability():
+def FourOfAKindProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def StraightFlushProbability():
+def StraightFlushProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
-def RoyalFlushProbability():
+def RoyalFlushProbability(holecards, communityCards, deck, Probability, CommunityCardStatus):
     pass
 
 
 # Calcuate and Display Probability ---------------------------------------------------------------------------------------
-def ProbabilityDisplay(holeCards, communityCards, Probability):
+def ProbabilityDisplay(holeCards, communityCards, Probability, CommunityCardStatus):
+    stages = {
+        0: "Pre-Flop",
+        1: "Flop",
+        2: "Turn",
+        3: "River"
+    }
+
     print()
     print("===============================================")
+    print("Stage:", stages[CommunityCardStatus])
     print("Hole Cards:", holeCards)
     print("Community Cards:", communityCards)
     print("-----------------------------------------------")
@@ -67,8 +75,17 @@ def ProbabilityDisplay(holeCards, communityCards, Probability):
     print()
 
 
-def CalculateProbability(holeCards, communityCards, deck, Probability):
-    pass
+def CalculateProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus):
+    HighCardDisplay(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    PairProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    TwoPairProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    ThreeOfAKindProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    StraightProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    FlushProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    FullHouseProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    FourOfAKindProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    StraightFlushProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
+    RoyalFlushProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus)
 
 
 # Card Input Functions --------------------------------------------------------------------------------------
@@ -124,6 +141,6 @@ while True:
         else:
             communityCardsInput(communityCards, deck, CommunityCardStatus)
 
-        CalculateProbability(holeCards, communityCards, deck, Probability) 
-        ProbabilityDisplay(holeCards, communityCards, Probability)
+        CalculateProbability(holeCards, communityCards, deck, Probability, CommunityCardStatus) 
+        ProbabilityDisplay(holeCards, communityCards, Probability, CommunityCardStatus)
         CommunityCardStatus += 1
