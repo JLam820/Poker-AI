@@ -51,7 +51,7 @@ def ProbabilityDisplay():
 
 
 # Card Input Functions --------------------------------------------------------------------------------------
-def holeCardsInput(holeCards):
+def holeCardsInput(holeCards, deck):
 
     flag = True
     while flag:
@@ -64,7 +64,7 @@ def holeCardsInput(holeCards):
             flag = False
 
 
-def communityCardsInput(communityCards):
+def communityCardsInput(communityCards, deck):
 
     flag = True
     while flag:
@@ -80,16 +80,7 @@ def communityCardsInput(communityCards):
 
 # Main Program Loop -----------------------------------------------------------------------------------------
 while True:
-    HighCard = ""
-    Pair = 0
-    TwoPair = 0
-    ThreeOfAKind = 0
-    Straight = 0
-    Flush = 0
-    FullHouse = 0
-    FourOfAKind = 0
-    StraightFlush = 0
-    RoyalFlush = 0
+    Probability = ["", 0, 0, 0, 0, 0, 0, 0, 0, 0]
     CommunityCardStatus = 0
     holeCards = []
     communityCards = []
@@ -98,10 +89,9 @@ while True:
 
     while CommunityCardStatus <= 3:
         if CommunityCardStatus == 0:
-            holeCardsInput(holeCards)
-            ProbabilityDisplay()
-            CommunityCardStatus += 1
+            holeCardsInput(holeCards, deck)     
         else:
-            communityCardsInput(communityCards)
-            ProbabilityDisplay()
-            CommunityCardStatus += 1
+            communityCardsInput(communityCards, deck)
+
+        ProbabilityDisplay(holeCards, deck, communityCards, CommunityCardStatus, Probability)
+        CommunityCardStatus += 1
